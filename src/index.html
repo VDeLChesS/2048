@@ -4,19 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2048 Game</title>
+  
 </head>
 <body>
-  <!-- main  -->
   <main class="wrapper">
-    <!-- intro -->
+  
     <div class="intro clearfix">
       <h1 class="intro_title">2048</h1>
     </div>
-    <!-- /end intro -->
-    <!-- controls -->
+    
     <div class="controls clearfix">
       <div class="controls_game">
-        <button data-js="newGame" class="controls_game-btn">New Game</button>
+        <button class="controls_game-btn" id="start_new_game">New Game</button>
       </div>
       <div class="controls_score">
         <span class="controls_score-label">Score</span>
@@ -24,7 +23,7 @@
         <span class="controls_score-text" data-js="score"></span>
       </div>
     </div>
-    <!-- gameboard -->
+  
     <div id="touchGameboard" class="gameboard">
       <div class="grid">
         <div class="grid_row">
@@ -54,11 +53,8 @@
       </div>
       <div class="tile-container"></div>
     </div>
-    <!-- /end gameboard -->
-    <!-- guide -->
     <section class="guide clearfix">
-      <h2>What is this?</h2>
-      <p>Although coded entirely from scratch, this game is a (lackluster) copy of Gabriele Cirulli's 2048, http://2048game.com/.</p>
+      <h2>Enjoy the Game</h2>
     </section>
     <section class="guide clearfix">
       <h2>How do I play?</h2>
@@ -72,11 +68,9 @@
       </div>
       <p>To win, get a 2048 tile.</p>
     </section>
-    <!-- /end guide -->
-  </main>
-  <!-- /end main -->
 
-  <!-- templates -->
+  </main>
+
   <script type="text/html" id="template_grid_cell">
     <div class="grid_cell"></div>
   </script>
@@ -87,11 +81,10 @@
     </div>
   </script>
 
-  <!-- Include necessary libraries -->
+  
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
   <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
-  <!-- /end templates -->
 </body>
 
 </html>

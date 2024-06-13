@@ -1,9 +1,7 @@
-// game.js
-import '../scss/styles.scss';
-import * as bootstrap from 'bootstrap';
-import Hammer from 'hammerjs';
-import _ from 'lodash';
 import $ from 'jquery';
+import _ from 'lodash';
+import Hammer from 'hammerjs';
+import { Tile } from './tile';
 
 class Game {
   constructor(size) {
@@ -17,9 +15,11 @@ class Game {
   initialize() {
     $(".grid").empty();
     $(".tile-container").empty();
+    this.board = []; // Clear the board array
     this.initBoard();
     this.initTile();
     this.initEventListeners();
+    $('[data-js="score"]').html(this.score.toString());
   }
 
   initBoard() {
@@ -71,7 +71,7 @@ class Game {
       }
     });
 
-    $('[data-js="newGame"]').off("click.newGame").on("click.newGame", () => gameStart());
+    $('[data-js="newGame"]').off("click.newGame").on("click.newGame", startNewGame);
   }
 
   isGameOver() {
@@ -170,7 +170,7 @@ class Game {
     } else if (direction === "down") {
       gameBoard = _.orderBy(this.boardFlatten(), "y", "desc");
     } else if (direction === "left") {
-      gameBoard = _.orderBy(this.boardFlatten(), "y", "asc");
+      gameBoard = _.orderBy(this.boardFlatten(), "x", "asc");
     }
 
     gameBoard.forEach(val => {
@@ -205,148 +205,10 @@ function gameStart() {
   window.game.initialize();
 }
 
-$(document).ready(gameStart);
-
-// tile.js
-class Tile {
-  constructor(x, y, game) {
-    this.game = game;
-    this.x = x;
-    this.y = y;
-    this.valueProp = 2;
-    this.canMove = false;
-    this.initialize();
-  }
-
-  initialize() {
-    const getTile = $.parseHTML($("#template_tile").html());
-    this.el = $(getTile);
-    this.el.find(".tile_number").html(this.valueProp).attr("data-value", 2);
-    this.setPosition(this.x, this.y);
-    this.animatePosition(true);
-    this.el.appendTo(".tile-container");
-  }
-
-  setPosition(x, y) {
-    this.x = x;
-    this.y = y;
-    this.game.board[x][y].tilesArray.push(this);
-  }
-
-  removeOldPosition(x, y) {
-    this.game.board[x][y].tilesArray.pop();
-  }
-
-  animatePosition(initializeFlag) {
-    const self = this;
-    const fromLeft = this.x * (100 / this.game.rows);
-    const fromTop = this.y * (100 / this.game.columns);
-    const animationDuration = 175;
-    const getPromise = $.Deferred();
-
-    if (initializeFlag) {
-      this.el.addClass("initialize");
-    } else {
-      this.el.removeClass("initialize");
-    }
-
-    function resolvePromise() {
-      getPromise.resolve();
-      self.el.removeClass("animate");
-      self.el.removeClass("initialize");
-    }
-
-    function setPosition() {
-      self.el.addClass("animate");
-      self.el.attr({ "data-x": fromLeft, "data-y": fromTop });
-    }
-
-    if (initializeFlag) {
-      setPosition();
-      setTimeout(resolvePromise, animationDuration + 50);
-    } else {
-      setPosition();
-      setTimeout(resolvePromise, animationDuration);
-    }
-
-    return getPromise;
-  }
-
-  moveCheck() {
-    return (
-      this.move("up", true) ||
-      this.move("right", true) ||
-      this.move("down", true) ||
-      this.move("left", true)
-    );
-  }
-
-  move(direction, checkFlag) {
-    checkFlag = checkFlag ? true : false;
-    direction = direction.toLowerCase();
-    let getNext;
-    let isNextMatch;
-    let isNextEmpty;
-    const nextPositionArray = [];
-
-    if (direction === "up") {
-      getNext = this.y > 0 ? this.game.board[this.x][this.y - 1] : false;
-      nextPositionArray.push(this.x, this.y - 1);
-    } else if (direction === "right") {
-      getNext = this.x < 3 ? this.game.board[this.x + 1][this.y] : false;
-      nextPositionArray.push(this.x + 1, this.y);
-    } else if (direction === "down") {
-      getNext = this.y < 3 ? this.game.board[this.x][this.y + 1] : false;
-      nextPositionArray.push(this.x, this.y + 1);
-    } else if (direction === "left") {
-      getNext = this.x > 0 ? this.game.board[this.x - 1][this.y] : false;
-      nextPositionArray.push(this.x - 1, this.y);
-    }
-
-    isNextMatch =
-      getNext &&
-      getNext.tilesArray.length === 1 &&
-      getNext.tilesArray[0].valueProp === this.valueProp;
-    isNextEmpty = getNext && getNext.tilesArray.length === 0;
-
-    if (checkFlag) {
-      return isNextEmpty || isNextMatch ? true : false;
-    } else if (isNextEmpty || isNextMatch) {
-      this.setPosition(nextPositionArray[0], nextPositionArray[1]);
-      this.removeOldPosition(this.x, this.y);
-      if (!isNextMatch) {
-        this.move(direction);
-      }
-    }
-  }
+function startNewGame() {
+  window.game.initialize();
 }
 
+$(document).ready(gameStart);
 
-document.addEventListener("DOMContentLoaded", function() {
-  const newGameButton = document.getElementById('start_new_game');
-
-  newGameButton.addEventListener('click', function() {
-    startNewGame();
-  });
-
-  function startNewGame() {
-    console.log('New game started');
-    const scoreElement = document.querySelector('[data-js="score"]');
-    scoreElement.textContent = '0';
-    clearGameboard();
-    initializeGameState();
-  }
-
-  function clearGameboard() {
-    const tiles = document.querySelectorAll('.tile');
-    tiles.forEach(tile => tile.remove());
-  }
-
-  function initializeGameState() {
-    window.game = new Game(4);
-    window.game.initialize();
-    console.log('Game state initialized');
-  }
-
-  initializeGameState(); // Automatically start a new game when the page loads
-});
+export { Game };

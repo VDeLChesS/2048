@@ -1,17 +1,13 @@
-/*
-  Variables:
-*/
 
-$grid-max-width: 500px;
-$grid-padding: 8px;
-$grid-border-radius: 5px;
-// white
-$color-background: #f2efea;
-$color-accent1: #f9d49a;
-$color-accent2: #d4a8cf;
-$color-list: #00d0a4, #dd7373, #7d53de, #6622cc, #00bfb2, #c06ff2, #340068,
- #3e92cc, #d8315b, #1c0b19, #1c0b19;
-/**/
+$grid-max-width: 650px;
+$grid-padding: 10px;
+$grid-border-radius: 10px;
+$color-background: #d7e2d3;
+$color-accent1: #9ae4f9;
+$color-accent2: #ce6a6a;
+$color-list: #bfd000, #368a1a, #de8853, #cc22c6, #0010bf, #4e0630c4, #14084b,
+ #2aa043, #860909, #8c3613, #8e0d77;
+
 
 *,
 *:before,
@@ -39,8 +35,8 @@ html {
  font-family: "Rubik", sans-serif;
  line-height: 1.5em;
  color: #fff;
- background: #160140;
- background: linear-gradient(to top, #160140, #261535);
+ background: #4e050dd7;
+ background: linear-gradient(to top, #40013e, #2471c7);
 }
 
 .wrapper {
@@ -53,7 +49,7 @@ h2 {
  font-style: italic;
 }
 
-/* Introduction */
+
 
 .intro {
  margin-bottom: 60px;
@@ -64,9 +60,6 @@ h2 {
  }
 }
 
-/**/
-
-/* Guide instructions */
 
 .guide {
  border-bottom: 1px solid grey;
@@ -96,11 +89,11 @@ h2 {
   margin-bottom: 1rem;
   padding: 0.5em 0.75em;
   background: transparent;
-  color: #f9d49a;
-  outline: 2px solid #f9d49a;
+  color: #5f0630;
+  outline: 2px solid #b4c51e99;
   appearance: none;
   border: 5px solid transparent;
-  box-shadow: inset 0 0 0px 2px #d4a8cf;
+  box-shadow: inset 0 0 0px 2px #810e0e;
   letter-spacing: 0.1em;
   font-weight: bold;
   text-transform: lowercase;
@@ -110,9 +103,9 @@ h2 {
   min-width: 4em;
   margin-bottom: 4rem;
   padding: 0.5em 0.75em;
-  background: #0000003b;
+  background: #000000c4;
   text-align: center;
-  background: linear-gradient(90deg, #f9d49a, #d4a8cf);
+  background: linear-gradient(90deg, #22c732da, #d9e70fc7);
 
   &-label,
   &-text {
@@ -122,21 +115,15 @@ h2 {
    color: initial;
   }
   &-text {
-   color: #4a3647;
+   color: #540a49;
    font-size: 2rem;
   }
  }
 }
 
-/**/
 
-/*
-  Gameboard:
-  the container for the static grid background; and generated tiles/numbers;
-*/
 
 .gameboard {
- /* Position: relative; set for tile-container, which absolutely positions over it to match grid's dimensions; */
  position: relative;
  width: 100%;
  max-width: 500px;
@@ -144,7 +131,7 @@ h2 {
  max-height: 500px;
  margin: auto;
  padding: $grid-padding;
- background: #ffffff08;
+ background: #8a228a70;
  border-radius: $grid-border-radius;
  box-shadow: 0 0 8px 0px $color-accent1;
  &::before {
@@ -154,12 +141,7 @@ h2 {
  }
 }
 
-/**/
 
-/*
-  Grid:
-  Creates the static grid background and individual grid cells;
-*/
 
 .grid {
  width: 100%;
@@ -176,21 +158,13 @@ h2 {
   width: 25%;
   padding: $grid-padding;
   float: left;
-  background: rgba(238, 228, 218, 0.35);
+  background: rgba(163, 182, 57, 0.35);
   background-clip: content-box;
  }
 }
 
-/**/
-
-/*
-  Tile container:
-  Contains the dynamically-generated tiles;
-  absolutely positioned over gameboard to match grid dimensions;
-*/
 
 .tile-container {
- /* absolutely positioned over gameboard to match dimensions */
  position: absolute;
  top: 0;
  left: 0;
@@ -201,9 +175,9 @@ h2 {
 }
 
 .tile {
- @extend .grid_cell; //display:table is used to vertically align number
+ @extend .grid_cell; 
  display: table;
- background: #eee4da;
+ background: #dc9b59;
  background-clip: content-box;
  position: absolute;
  z-index: 2;
@@ -267,7 +241,6 @@ h2 {
 
 $i: 2;
 $listCounter: 1;
-// increment by * 2 until 2048
 @while $i <=2048 {
  .tile_number[data-value="#{$i}"] {
   background: nth($color-list, $listCounter);
